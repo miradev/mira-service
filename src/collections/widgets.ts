@@ -1,11 +1,9 @@
-import {BaseResponse, IWidget} from "../definitions";
+import {BaseResponse, Collections, IWidget} from "../definitions";
 import {Collection} from "mongodb";
 import {mongodb} from "../clients/mongodb";
 
-const COLLECTION_NAME = "widgets"
-
 const collection = (): Collection => {
-  return mongodb().collection(COLLECTION_NAME)
+  return mongodb().collection(Collections.WIDGETS)
 }
 
 export const createWidget = (widget: IWidget): Promise<BaseResponse> => {

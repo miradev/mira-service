@@ -1,3 +1,7 @@
+export enum Collections {
+  WIDGETS = 'widgets'
+}
+
 export interface BaseResponse {
   success: boolean
   description?: string

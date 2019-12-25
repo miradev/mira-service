@@ -1,8 +1,9 @@
+import config from 'config'
 import {Db, MongoClient} from "mongodb";
 
 // const uri = "mongodb+srv://dbAdmin:<password>@miradev-tdjtt.mongodb.net/test?retryWrites=true&w=majority"
-const uri = "mongodb://127.0.0.1:3000/local"
-const db_name = "dev"
+const uri = config.get<string>('database.uri')
+const db_name = config.get<string>('database.name')
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 let connection: MongoClient
 
