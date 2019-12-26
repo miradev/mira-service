@@ -1,15 +1,8 @@
-export enum Collections {
-  WIDGETS = 'widgets'
-}
+import {IWidget} from "./definitions";
 
 export interface BaseResponse {
   success: boolean
   description?: string
-}
-
-export interface IWidget {
-  name: string
-  description: string
 }
 
 export interface CreateWidgetSuccess extends BaseResponse {
