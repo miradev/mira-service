@@ -1,23 +1,33 @@
-import {BaseResponse, Collections, IWidget} from "../definitions";
+import {Collections, CreateWidgetResponse, GetAllWidgetResponse, IWidget} from "../definitions";
 import {Collection} from "mongodb";
 import {mongodb} from "../clients/mongodb";
+import {createErrorResponse} from "../helpers";
 
-const collection = (): Collection => {
+const collection = (): Collection<IWidget> => {
   return mongodb().collection(Collections.WIDGETS)
 }
 
-export const createWidget = (widget: IWidget): Promise<BaseResponse> => {
-  return collection().insertOne(widget)
+export const createWidget = (widget: IWidget): Promise<CreateWidgetResponse> => {
+  return collection()
+    .insertOne(widget)
     .then(newWidget => {
-      console.log('Created widget', newWidget.insertedId)
       return {
-        success: true
+        success: true,
+        id: newWidget.insertedId
       }
     })
-    .catch(err => {
+    .catch(createErrorResponse)
+}
+
+export const getAllWidgets = (): Promise<GetAllWidgetResponse> => {
+  return collection()
+    .find()
+    .toArray()
+    .then((documents) => {
       return {
-        success: false,
-        description: err.toString()
+        success: true,
+        widgets: documents
       }
     })
+    .catch(createErrorResponse)
 }
