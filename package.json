@@ -28,6 +28,7 @@
   "scripts": {
     "build": "tsc && yarn lint:fix",
     "start": "yarn build && node ./dist/index.js",
+    "start:dev": "tsc && node ./dist/index.js",
     "lint:fix": "tslint --fix --project .",
     "lint:prettier": "prettier --write \"src/**/*.ts\""
   },
