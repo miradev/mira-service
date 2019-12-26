@@ -1,6 +1,11 @@
-import {BaseResponse} from "./types/responses";
+import express from "express"
+import { BaseResponse } from "./types/responses"
 
-export const validate = (obj: object, guard: Function, failedCallback?: Function): boolean => {
+export const validate = (
+  obj: object,
+  guard: (o: object) => boolean,
+  failedCallback?: () => void,
+): boolean => {
   if (guard(obj)) {
     return true
   }
@@ -8,16 +13,16 @@ export const validate = (obj: object, guard: Function, failedCallback?: Function
   return false
 }
 
-export const validationFailed = (res: any) => (): void => {
+export const validationFailed = (res: express.Response) => (): void => {
   res.send({
     success: false,
-    description: 'Unexpected request formatting'
-  } as BaseResponse)
+    description: "Unexpected request formatting",
+  })
 }
 
 export const createErrorResponse = (err: any): BaseResponse => {
   return {
     success: false,
-    description: err.toString()
+    description: err.toString(),
   }
 }

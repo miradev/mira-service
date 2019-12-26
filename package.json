@@ -22,11 +22,14 @@
     "mongodb": "^3.4.1",
     "prettier": "^1.19.1",
     "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.3"
   },
   "scripts": {
-    "build": "tsc",
-    "start": "yarn build && node ./dist/index.js"
+    "build": "tsc && yarn lint:fix",
+    "start": "yarn build && node ./dist/index.js",
+    "lint:fix": "tslint --fix --project .",
+    "lint:prettier": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
     "core-js": "^3.5.0"

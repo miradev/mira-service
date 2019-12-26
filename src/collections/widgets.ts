@@ -1,8 +1,8 @@
-import {Collections, IWidget} from "../types/definitions";
-import {Collection} from "mongodb";
-import {mongodb} from "../clients/mongodb";
-import {createErrorResponse} from "../helpers";
-import {CreateWidgetResponse, GetAllWidgetResponse} from "../types/responses";
+import { Collection } from "mongodb"
+import { mongodb } from "../clients/mongodb"
+import { createErrorResponse } from "../helpers"
+import { Collections, IWidget } from "../types/definitions"
+import { CreateWidgetResponse, GetAllWidgetResponse } from "../types/responses"
 
 const collection = (): Collection<IWidget> => {
   return mongodb().collection(Collections.WIDGETS)
@@ -14,8 +14,8 @@ export const createWidget = (widget: IWidget): Promise<CreateWidgetResponse> => 
     .insertOne(widget)
     .then(newWidget => {
       return {
+        id: newWidget.insertedId,
         success: true,
-        id: newWidget.insertedId
       }
     })
     .catch(createErrorResponse)
@@ -23,12 +23,12 @@ export const createWidget = (widget: IWidget): Promise<CreateWidgetResponse> => 
 
 export const getAllWidgets = (): Promise<GetAllWidgetResponse> => {
   return collection()
-    .find({active: true})
+    .find({ active: true })
     .toArray()
-    .then((documents) => {
+    .then(documents => {
       return {
         success: true,
-        widgets: documents
+        widgets: documents,
       }
     })
     .catch(createErrorResponse)

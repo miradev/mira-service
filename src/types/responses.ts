@@ -1,4 +1,4 @@
-import {IWidget} from "./definitions";
+import { IWidget } from "./definitions"
 
 export interface BaseResponse {
   success: boolean
@@ -10,7 +10,7 @@ export interface CreateWidgetSuccess extends BaseResponse {
 }
 
 export interface GetAllWidgetSuccess extends BaseResponse {
-  widgets: Array<IWidget>
+  widgets: IWidget[]
 }
 
 export type CreateWidgetResponse = CreateWidgetSuccess | BaseResponse

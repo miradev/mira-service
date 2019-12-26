@@ -1,5 +1,5 @@
 export enum Collections {
-  WIDGETS = 'widgets'
+  WIDGETS = "widgets",
 }
 
 export interface IWidget {
