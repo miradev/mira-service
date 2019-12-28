@@ -34,7 +34,7 @@
     "clean": "yarn rimraf ./dist",
     "start": "yarn build && node ./dist/index.js",
     "start:dev": "tsc && node ./dist/index.js",
-    "lint:fix": "tslint --fix --project .",
+    "lint:fix": "tslint --fix --project . && yarn lint:prettier",
     "lint:prettier": "prettier --write \"src/**/*.ts\"",
     "test": "yarn build:nolint && yarn jest --detectOpenHandles"
   },

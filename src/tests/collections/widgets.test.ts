@@ -33,13 +33,21 @@ describe("widgets", () => {
     it("retrieves the widget", async () => {
       const response = (await getWidget(id)) as GetWidgetSuccess
       expect(response.success).toEqual(true)
-      expect(response.widget).toEqual(widget)
+      expect(response.widget.active).toBe(true)
+    })
+    it("should fail if widget does not exist", async () => {
+      const response = await getWidget(new ObjectId("fff000fff000"))
+      expect(response.success).toEqual(false)
     })
   })
   describe("deleteWidget", () => {
     it("deletes the widget", async () => {
       const response = await deleteWidget(id)
       expect(response.success).toEqual(true)
+    })
+    it("turns off active status of widget", async () => {
+      const verifyResponse = await getWidget(id)
+      expect(verifyResponse.success).toBe(false)
     })
   })
 })
