@@ -23,3 +23,9 @@ Create the local database. You should be able to start using the endpoints local
 ```shell script
 sudo ./scripts/create_mongo.sh
 ```
+
+## Tests
+We are using [Jest](https://jestjs.io/). To run all tests:
+```shell script
+yarn test
+```
