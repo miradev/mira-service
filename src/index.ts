@@ -1,9 +1,9 @@
 import config from "config"
 import express from "express"
 import { connectMongo } from "./clients/mongodb"
-import {createWidget, deleteWidget, getAllWidgets, getWidget} from "./collections/widgets"
+import { createWidget, deleteWidget, getAllWidgets, getWidget } from "./collections/widgets"
 import { isCreateWidgetRequest } from "./guards"
-import {badObjectId, validate, validateId, validationFailed} from "./helpers"
+import { badObjectId, validate, validateId, validationFailed } from "./helpers"
 const app = express()
 const port = config.get<number>("service.port")
 app.use(express.json())
@@ -32,7 +32,7 @@ app.delete("/widgets/:id", async (req, res) => {
   id && res.send(await deleteWidget(id))
 })
 
-console.log(`Server started on port ${port}`)
-app.listen(port, () => {
-  connectMongo()
+app.listen(port, async () => {
+  console.log(`Server started on port ${port}`)
+  await connectMongo()
 })

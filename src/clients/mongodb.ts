@@ -7,8 +7,8 @@ const dbName = config.get<string>("database.name")
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 let connection: MongoClient
 
-export const connectMongo = () => {
-  client
+export const connectMongo = async () => {
+  await client
     .connect()
     .then(conn => {
       connection = conn

@@ -8,6 +8,7 @@
   "devDependencies": {
     "@types/config": "^0.0.36",
     "@types/express": "^4.17.2",
+    "@types/jest": "^24.0.25",
     "@types/mongodb": "^3.3.14",
     "@typescript-eslint/eslint-plugin": "^2.11.0",
     "@typescript-eslint/parser": "^2.11.0",
@@ -19,20 +20,38 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "express": "^4.17.1",
+    "jest": "^24.9.0",
     "mongodb": "^3.4.1",
     "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.3"
   },
   "scripts": {
-    "build": "tsc && yarn lint:fix",
+    "build": "yarn clean && yarn lint:fix && tsc",
+    "build:nolint": "yarn clean && tsc",
+    "clean": "yarn rimraf ./dist",
     "start": "yarn build && node ./dist/index.js",
     "start:dev": "tsc && node ./dist/index.js",
     "lint:fix": "tslint --fix --project .",
-    "lint:prettier": "prettier --write \"src/**/*.ts\""
+    "lint:prettier": "prettier --write \"src/**/*.ts\"",
+    "test": "yarn build:nolint && yarn jest --detectOpenHandles"
   },
   "dependencies": {
     "core-js": "^3.5.0"
+  },
+  "jest": {
+    "verbose": true,
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.+(ts|tsx|js)",
+      "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    }
   }
 }
