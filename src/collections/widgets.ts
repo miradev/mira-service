@@ -41,7 +41,7 @@ export const getAllWidgets = (): Promise<GetAllWidgetResponse> => {
 
 export const getWidget = (id: ObjectId): Promise<GetWidgetResponse> => {
   return collection()
-    .findOne({ _id: id })
+    .findOne({ _id: id, active: true })
     .then(widget => {
       if (widget) {
         return {
