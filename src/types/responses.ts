@@ -13,5 +13,11 @@ export interface GetAllWidgetSuccess extends BaseResponse {
   widgets: IWidget[]
 }
 
+export interface GetWidgetSuccess extends BaseResponse {
+  widget: IWidget
+}
+
 export type CreateWidgetResponse = CreateWidgetSuccess | BaseResponse
 export type GetAllWidgetResponse = GetAllWidgetSuccess | BaseResponse
+export type GetWidgetResponse = GetWidgetSuccess | BaseResponse
+export type DeleteWidgetResponse = BaseResponse

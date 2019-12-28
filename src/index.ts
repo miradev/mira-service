@@ -1,9 +1,9 @@
 import config from "config"
 import express from "express"
 import { connectMongo } from "./clients/mongodb"
-import { createWidget, getAllWidgets } from "./collections/widgets"
+import {createWidget, deleteWidget, getAllWidgets, getWidget} from "./collections/widgets"
 import { isCreateWidgetRequest } from "./guards"
-import { validate, validationFailed } from "./helpers"
+import {badObjectId, validate, validateId, validationFailed} from "./helpers"
 const app = express()
 const port = config.get<number>("service.port")
 app.use(express.json())
@@ -20,6 +20,16 @@ app.post("/widgets", async (req, res) => {
 
 app.get("/widgets", async (_, res) => {
   res.send(await getAllWidgets())
+})
+
+app.get("/widgets/:id", async (req, res) => {
+  const id = validateId(req.params.id, badObjectId(res))
+  id && res.send(await getWidget(id))
+})
+
+app.delete("/widgets/:id", async (req, res) => {
+  const id = validateId(req.params.id, badObjectId(res))
+  id && res.send(await deleteWidget(id))
 })
 
 console.log(`Server started on port ${port}`)
