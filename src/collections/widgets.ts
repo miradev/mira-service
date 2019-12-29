@@ -7,6 +7,7 @@ import {
   DeleteWidgetResponse,
   GetAllWidgetResponse,
   GetWidgetResponse,
+  UpdateWidgetResponse,
 } from "../types/responses"
 
 const collection = (): Collection<IWidget> => {
@@ -57,9 +58,26 @@ export const getWidget = (id: ObjectId): Promise<GetWidgetResponse> => {
     .catch(createErrorResponse)
 }
 
+export const updateWidget = (id: ObjectId, widget: IWidget): Promise<UpdateWidgetResponse> => {
+  return collection()
+    .updateOne({ _id: id, active: true }, { $set: { description: widget.description } })
+    .then(res => {
+      if (res.modifiedCount === 1) {
+        return {
+          success: true,
+        }
+      }
+      return {
+        success: false,
+        description: "Failed to update widget",
+      }
+    })
+    .catch(createErrorResponse)
+}
+
 export const deleteWidget = (id: ObjectId): Promise<DeleteWidgetResponse> => {
   return collection()
-    .updateOne({ _id: id }, { $set: { active: false } })
+    .updateOne({ _id: id, active: true }, { $set: { active: false } })
     .then(res => {
       if (res.modifiedCount === 1) {
         return {

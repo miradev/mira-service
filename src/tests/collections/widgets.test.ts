@@ -1,6 +1,12 @@
 import { ObjectId } from "mongodb"
 import { connectMongo } from "../../clients/mongodb"
-import { createWidget, deleteWidget, getAllWidgets, getWidget } from "../../collections/widgets"
+import {
+  createWidget,
+  deleteWidget,
+  getAllWidgets,
+  getWidget,
+  updateWidget,
+} from "../../collections/widgets"
 import { IWidget } from "../../types/definitions"
 import { CreateWidgetSuccess, GetAllWidgetSuccess, GetWidgetSuccess } from "../../types/responses"
 
@@ -38,6 +44,19 @@ describe("widgets", () => {
     it("should fail if widget does not exist", async () => {
       const response = await getWidget(new ObjectId("fff000fff000"))
       expect(response.success).toEqual(false)
+    })
+  })
+  describe("updateWidget", () => {
+    it("updates the widget with a different description", async () => {
+      const newWidget: IWidget = {
+        name: "Clock",
+        description: "An updated description",
+        active: false,
+      }
+      const response = await updateWidget(id, newWidget)
+      expect(response.success).toEqual(true)
+      const getResponse = (await getWidget(id)) as GetWidgetSuccess
+      expect(getResponse.widget.description).not.toEqual(widget.description)
     })
   })
   describe("deleteWidget", () => {

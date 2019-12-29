@@ -20,4 +20,5 @@ export interface GetWidgetSuccess extends BaseResponse {
 export type CreateWidgetResponse = CreateWidgetSuccess | BaseResponse
 export type GetAllWidgetResponse = GetAllWidgetSuccess | BaseResponse
 export type GetWidgetResponse = GetWidgetSuccess | BaseResponse
+export type UpdateWidgetResponse = BaseResponse
 export type DeleteWidgetResponse = BaseResponse
