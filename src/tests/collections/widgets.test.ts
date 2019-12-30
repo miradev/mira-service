@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb"
-import { connectMongo } from "../../clients/mongodb"
+import {connectMongo, disconnectMongo} from "../../clients/mongodb"
 import {
   createWidget,
   deleteWidget,
@@ -12,6 +12,10 @@ import { CreateWidgetSuccess, GetAllWidgetSuccess, GetWidgetSuccess } from "../.
 
 beforeAll(async () => {
   await connectMongo()
+})
+
+afterAll(async () => {
+  await disconnectMongo()
 })
 
 describe("widgets", () => {

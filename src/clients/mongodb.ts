@@ -22,3 +22,7 @@ export const connectMongo = async () => {
 export const mongodb = (): Db => {
   return connection.db(dbName)
 }
+
+export const disconnectMongo = async () => {
+  return client.close()
+}
