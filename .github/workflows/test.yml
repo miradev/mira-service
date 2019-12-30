@@ -1,0 +1,19 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up mongodb
+      run: |
+        echo Setting up mongo
+        ./scripts/createmongo.sh
+    - name: Run a multi-line script
+      run: |
+        yarn install
+        yarn test
