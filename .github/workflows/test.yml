@@ -1,4 +1,4 @@
-name: CI
+name: Unit Tests
 
 on: [push]
 
@@ -13,7 +13,7 @@ jobs:
       run: |
         echo Setting up mongo
         ./scripts/create_mongo.sh
-    - name: Run a multi-line script
+    - name: Running unit tests
       run: |
         yarn install
         yarn test
