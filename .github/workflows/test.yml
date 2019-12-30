@@ -12,7 +12,7 @@ jobs:
     - name: Set up mongodb
       run: |
         echo Setting up mongo
-        ./scripts/createmongo.sh
+        ./scripts/create_mongo.sh
     - name: Run a multi-line script
       run: |
         yarn install
