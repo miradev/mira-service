@@ -9,4 +9,4 @@ RUN yarn install
 COPY . .
 
 EXPOSE 8000
-CMD [ "MONGODB_URI=$MONGODB_URI", "yarn", "start" ]
+CMD [ "yarn", "start" ]
