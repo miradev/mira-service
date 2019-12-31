@@ -1,7 +1,7 @@
 import config from "config"
 import { Db, MongoClient } from "mongodb"
 
-const uri = (process.env.MONGODB_URI) ? process.env.MONGODB_URI : config.get<string>("database.uri")
+const uri = process.env.MONGODB_URI || config.get<string>("database.uri")
 const dbName = config.get<string>("database.name")
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 let connection: MongoClient

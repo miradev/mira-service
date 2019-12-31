@@ -1,5 +1,6 @@
 {
   "database": {
+    "uri": "secret",
     "name": "production"
   }
 }

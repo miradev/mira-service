@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb"
-import {connectMongo, disconnectMongo} from "../../clients/mongodb"
+import { connectMongo, disconnectMongo } from "../../clients/mongodb"
 import {
   createWidget,
   deleteWidget,
