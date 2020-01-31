@@ -1,6 +1,6 @@
-import express from "express"
-import { ObjectId } from "mongodb"
-import { BaseResponse } from "./types/responses"
+import express from 'express'
+import { ObjectId } from 'mongodb'
+import { BaseResponse } from './types/responses'
 
 export const validate = (
   obj: object,
@@ -26,14 +26,14 @@ export const validateId = (id: string, failureCallback?: () => void): ObjectId |
 export const validationFailed = (res: express.Response) => (): void => {
   res.send({
     success: false,
-    description: "Unexpected request formatting",
+    description: 'Unexpected request formatting',
   })
 }
 
 export const badObjectId = (res: express.Response) => (): void => {
   res.send({
     success: false,
-    description: "Invalid object Id",
+    description: 'Invalid object Id',
   })
 }
 

@@ -1,4 +1,4 @@
-import { IWidget } from "./definitions"
+import { IWidget } from './definitions'
 
 export interface BaseResponse {
   success: boolean

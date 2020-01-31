@@ -1,14 +1,14 @@
-import { Collection, ObjectId } from "mongodb"
-import { mongodb } from "../clients/mongodb"
-import { createErrorResponse } from "../helpers"
-import { Collections, IWidget } from "../types/definitions"
+import { Collection, ObjectId } from 'mongodb'
+import { mongodb } from '../clients/mongodb'
+import { createErrorResponse } from '../helpers'
+import { Collections, IWidget } from '../types/definitions'
 import {
   CreateWidgetResponse,
   DeleteWidgetResponse,
   GetAllWidgetResponse,
   GetWidgetResponse,
   UpdateWidgetResponse,
-} from "../types/responses"
+} from '../types/responses'
 
 const collection = (): Collection<IWidget> => {
   return mongodb().collection(Collections.WIDGETS)
@@ -52,7 +52,7 @@ export const getWidget = (id: ObjectId): Promise<GetWidgetResponse> => {
       }
       return {
         success: false,
-        widget: "Widget does not exist",
+        widget: 'Widget does not exist',
       }
     })
     .catch(createErrorResponse)
@@ -69,7 +69,7 @@ export const updateWidget = (id: ObjectId, widget: IWidget): Promise<UpdateWidge
       }
       return {
         success: false,
-        description: "Failed to update widget",
+        description: 'Failed to update widget',
       }
     })
     .catch(createErrorResponse)
@@ -86,7 +86,7 @@ export const deleteWidget = (id: ObjectId): Promise<DeleteWidgetResponse> => {
       }
       return {
         success: false,
-        description: "Failed to delete widget",
+        description: 'Failed to delete widget',
       }
     })
     .catch(createErrorResponse)
