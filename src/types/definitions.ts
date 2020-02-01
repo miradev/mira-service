@@ -12,4 +12,5 @@ export interface IWidget {
 export interface IUser {
   name: string
   hash: string
+  salt: string
 }

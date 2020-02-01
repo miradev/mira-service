@@ -12,13 +12,15 @@ const collection = (): Collection<IUser> => {
 export const createUser = (username: string, password: string): Promise<CreateUserResponse> => {
   return genSalt()
     .then(salt => {
-      return hash(password, salt)
+      return hash(password, salt).then(hashed => {
+        return {
+          name: username,
+          hash: hashed,
+          salt,
+        }
+      })
     })
-    .then(hashResult => {
-      const newUser = {
-        name: username,
-        hash: hashResult,
-      }
+    .then(newUser => {
       return collection()
         .insertOne(newUser)
         .then(user => {
