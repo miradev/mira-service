@@ -1,6 +1,10 @@
 import config from 'config'
 import express from 'express'
+import session from 'express-session'
+import passport from 'passport'
+import * as passportLocal from 'passport-local'
 import { connectMongo } from './clients/mongodb'
+import { createUser, passportLogin } from './collections/users'
 import {
   createWidget,
   deleteWidget,
@@ -8,14 +12,30 @@ import {
   getWidget,
   updateWidget,
 } from './collections/widgets'
-import { isCreateWidgetRequest, isUpdateWidgetRequest } from './guards'
+import { isAuthRequest, isCreateWidgetRequest, isUpdateWidgetRequest } from './guards'
 import { badObjectId, validate, validateId, validationFailed } from './helpers'
 const app = express()
 const port = config.get<number>('service.port')
 app.use(express.json())
+app.use(
+  session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true,
+  }),
+)
+app.use(passport.initialize())
+app.use(passport.session())
+const LocalStrategy = passportLocal.Strategy
+passport.use(new LocalStrategy(passportLogin))
 
 app.get('/', (_, res) => {
   res.send('Welcome to the Mira backend service!')
+})
+
+app.post('/signup', async (req, res) => {
+  validate(req.body, isAuthRequest, validationFailed(res)) &&
+    res.send(await createUser(req.body.username, req.body.password))
 })
 
 // TODO: Add OAuth

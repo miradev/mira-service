@@ -1,4 +1,4 @@
-import { genSalt, hash } from 'bcryptjs'
+import { compare, genSalt, hash } from 'bcryptjs'
 import { Collection } from 'mongodb'
 import { mongodb } from '../clients/mongodb'
 import { createErrorResponse } from '../helpers'
@@ -9,16 +9,37 @@ const collection = (): Collection<IUser> => {
   return mongodb().collection(Collections.USERS)
 }
 
+export const passportLogin = (
+  username: string,
+  password: string,
+  done: (error: any, user?: any) => void,
+) => {
+  return collection()
+    .findOne({ username })
+    .then(user => {
+      if (user) {
+        return compare(password, user.hash).then(success => {
+          if (success) {
+            return done(null, user)
+          }
+          return done(null, false)
+        })
+      }
+      return done(null, false)
+    })
+    .catch(done)
+}
+
 export const createUser = (username: string, password: string): Promise<CreateUserResponse> => {
   return genSalt()
     .then(salt => {
-      return hash(password, salt).then(hashed => {
-        return {
-          name: username,
-          hash: hashed,
-          salt,
-        }
-      })
+      return hash(password, salt)
+    })
+    .then(hashed => {
+      return {
+        username,
+        hash: hashed,
+      }
     })
     .then(newUser => {
       return collection()
