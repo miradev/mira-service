@@ -22,3 +22,9 @@ export type GetAllWidgetResponse = GetAllWidgetSuccess | BaseResponse
 export type GetWidgetResponse = GetWidgetSuccess | BaseResponse
 export type UpdateWidgetResponse = BaseResponse
 export type DeleteWidgetResponse = BaseResponse
+
+export interface CreateUserSuccess extends BaseResponse {
+  id: string
+}
+
+export type CreateUserResponse = CreateUserSuccess | BaseResponse
