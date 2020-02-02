@@ -22,7 +22,7 @@ describe('users', () => {
     })
   })
   describe('login', () => {
-    it('Succeeds if the user exists', async () => {
+    it('Succeeds if the user exists and password is correct', async () => {
       let success = false
       await passportLogin(credentials.username, credentials.password, (err, user) => {
         if (err) {

@@ -19,8 +19,16 @@ curl -X PUT 'http://localhost:8000/widgets/5e08e7d2d8c9b1285e8ebd3e' \
 
 #curl -X DELETE 'http://localhost:8000/widgets/5e06c542b9593c81c8f6bf22' && echo
 
-# Create widget
+# Create user
 curl -X POST 'http://localhost:8000/signup' \
+-H "Content-Type: application/json" \
+-d '{
+  "username": "User",
+  "password": "hunter2"
+}' && echo
+
+# Login
+curl -X POST 'http://localhost:8000/login' \
 -H "Content-Type: application/json" \
 -d '{
   "username": "User",
