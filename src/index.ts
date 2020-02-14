@@ -38,11 +38,9 @@ passport.deserializeUser((user, done) => {
 const LocalStrategy = passportLocal.Strategy
 passport.use(new LocalStrategy(passportLogin))
 const isAuth = (req: any, res: any, next: any) => {
-  if (req.user) {
-    console.log('Exist!')
+  if (req.isAuthenticated()) {
     next()
   } else {
-    console.log('Does not exist!')
     res.redirect('/login')
   }
 }
@@ -58,7 +56,7 @@ app.post('/signup', async (req, res) => {
 })
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect('/')
+  res.send(req.user)
 })
 
 app.get('/logout', async (req, res) => {
