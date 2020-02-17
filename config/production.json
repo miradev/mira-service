@@ -1,6 +1,9 @@
 {
   "database": {
-    "uri": "secret",
+    "uri": "mongodb://127.0.0.1:3000/local",
     "name": "production"
+  },
+  "service": {
+    "port": 8080
   }
 }
