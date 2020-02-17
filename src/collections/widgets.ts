@@ -14,8 +14,9 @@ const collection = (): Collection<IWidget> => {
   return mongodb().collection(Collections.WIDGETS)
 }
 
-export const createWidget = (widget: IWidget): Promise<CreateWidgetResponse> => {
+export const createWidget = (widget: IWidget, userId: string): Promise<CreateWidgetResponse> => {
   widget.active = true
+  widget.userId = userId
   return collection()
     .insertOne(widget)
     .then(newWidget => {

@@ -66,8 +66,9 @@ app.get('/logout', async (req, res) => {
 
 // TODO: Add user information to widget creation
 app.post('/widgets', isAuth, async (req, res) => {
+  const userId = (req.user as any)._id
   validate(req.body, isCreateWidgetRequest, validationFailed(res)) &&
-    res.send(await createWidget(req.body))
+    res.send(await createWidget(req.body, userId))
 })
 
 app.get('/widgets', async (_, res) => {

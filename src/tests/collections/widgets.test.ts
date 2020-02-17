@@ -27,7 +27,7 @@ describe('widgets', () => {
   let id: ObjectId
   describe('createWidget', () => {
     it('creates the widget', async () => {
-      const response = (await createWidget(widget)) as CreateWidgetSuccess
+      const response = (await createWidget(widget, '1')) as CreateWidgetSuccess
       expect(response.success).toEqual(true)
       id = new ObjectId(response.id)
     })
