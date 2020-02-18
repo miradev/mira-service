@@ -1,6 +1,6 @@
 import express from 'express'
 import { ObjectId } from 'mongodb'
-import { BaseResponse } from './types/responses'
+import { BaseResponse, UploadWidgetResponse } from './types/responses'
 
 export const validate = (
   obj: object,
@@ -35,6 +35,19 @@ export const badObjectId = (res: express.Response) => (): void => {
     success: false,
     description: 'Invalid object Id',
   })
+}
+
+export const createUploadWidgetResponse = (file: Express.Multer.File): UploadWidgetResponse => {
+  if (file) {
+    return {
+      success: true,
+      filename: file.filename,
+    }
+  }
+  return {
+    success: false,
+    description: 'There was no file uploaded',
+  }
 }
 
 export const createErrorResponse = (err: any): BaseResponse => {

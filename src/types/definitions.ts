@@ -9,6 +9,7 @@ export interface IWidget {
   description: string
   active: boolean
   author?: string
+  filename: string
 }
 
 export enum UserTags {

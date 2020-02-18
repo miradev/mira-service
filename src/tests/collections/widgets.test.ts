@@ -23,6 +23,7 @@ describe('widgets', () => {
     name: 'Clock',
     description: 'A clock application',
     active: false,
+    filename: 'clock.zip',
   }
   let id: ObjectId
   describe('createWidget', () => {
@@ -56,6 +57,7 @@ describe('widgets', () => {
         name: 'Clock',
         description: 'An updated description',
         active: false,
+        filename: 'clock.zip',
       }
       const response = await updateWidget(id, newWidget)
       expect(response.success).toEqual(true)

@@ -5,6 +5,10 @@ export interface BaseResponse {
   description?: string
 }
 
+export interface UploadWidgetSuccess extends BaseResponse {
+  filename: string
+}
+
 export interface CreateWidgetSuccess extends BaseResponse {
   id: string
 }
@@ -17,6 +21,7 @@ export interface GetWidgetSuccess extends BaseResponse {
   widget: IWidget
 }
 
+export type UploadWidgetResponse = UploadWidgetSuccess | BaseResponse
 export type CreateWidgetResponse = CreateWidgetSuccess | BaseResponse
 export type GetAllWidgetResponse = GetAllWidgetSuccess | BaseResponse
 export type GetWidgetResponse = GetWidgetSuccess | BaseResponse

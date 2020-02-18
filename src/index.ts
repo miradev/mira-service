@@ -1,8 +1,11 @@
 import config from 'config'
 import express from 'express'
 import session from 'express-session'
+import * as fs from 'fs'
+import multer from 'multer'
 import passport from 'passport'
 import * as passportLocal from 'passport-local'
+import * as path from 'path'
 import { connectMongo, createSessionStore } from './clients/mongodb'
 import { createUser, passportLogin } from './collections/users'
 import {
@@ -13,7 +16,13 @@ import {
   updateWidget,
 } from './collections/widgets'
 import { isCreateWidgetRequest, isSignupRequest, isUpdateWidgetRequest } from './guards'
-import { badObjectId, validate, validateId, validationFailed } from './helpers'
+import {
+  badObjectId,
+  createUploadWidgetResponse,
+  validate,
+  validateId,
+  validationFailed,
+} from './helpers'
 
 const app = express()
 const port = config.get<number>('service.port')
@@ -25,6 +34,9 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true')
   next()
 })
+// TODO: load from config
+const fileDir = 'uploads'
+const upload = multer({ dest: fileDir })
 app.use(
   session({
     // TODO: add to config
@@ -70,6 +82,20 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login' })
 app.get('/logout', async (req, res) => {
   await req.logout()
   res.redirect('/')
+})
+
+app.post('/widgets/upload', isAuth, upload.single('widget'), async (req, res) => {
+  console.log(req.file)
+  res.send(createUploadWidgetResponse(req.file))
+})
+
+app.get('/files/:id', (req, res) => {
+  const fullPath = path.resolve(fileDir, req.params.id)
+  if (fs.existsSync(fullPath)) {
+    res.sendFile(fullPath)
+  } else {
+    res.send('File not found')
+  }
 })
 
 app.post('/widgets', isAuth, async (req, res) => {
