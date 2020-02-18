@@ -10,6 +10,7 @@ export interface IWidget {
   active: boolean
   author?: string
   filename: string
+  images: string[]
 }
 
 export enum UserTags {
