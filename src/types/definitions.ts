@@ -11,7 +11,13 @@ export interface IWidget {
   userId?: string
 }
 
+export enum UserTags {
+  DEVELOPER = 'dev',
+}
+
 export interface IUser {
   username: string
+  email: string
+  tags: UserTags[]
   hash: string
 }

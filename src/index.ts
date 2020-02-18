@@ -12,7 +12,7 @@ import {
   getWidget,
   updateWidget,
 } from './collections/widgets'
-import { isAuthRequest, isCreateWidgetRequest, isUpdateWidgetRequest } from './guards'
+import { isCreateWidgetRequest, isSignupRequest, isUpdateWidgetRequest } from './guards'
 import { badObjectId, validate, validateId, validationFailed } from './helpers'
 
 const app = express()
@@ -58,8 +58,8 @@ app.get('/', (_, res) => {
 })
 
 app.post('/signup', async (req, res) => {
-  validate(req.body, isAuthRequest, validationFailed(res)) &&
-    res.send(await createUser(req.body.username, req.body.password))
+  validate(req.body, isSignupRequest, validationFailed(res)) &&
+    res.send(await createUser(req.body.username, req.body.password, req.body.email, req.body.dev))
 })
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {

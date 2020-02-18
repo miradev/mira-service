@@ -5,7 +5,9 @@ curl -X POST 'http://localhost:8000/signup' \
 -H "Content-Type: application/json" \
 -d '{
   "username": "User",
-  "password": "hunter2"
+  "password": "hunter2",
+  "email": "example@gmail.com",
+  "dev": true
 }' && echo
 
 # Login

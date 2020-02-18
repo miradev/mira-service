@@ -8,4 +8,8 @@ export const isAuthRequest = (o: any) => {
   return o.username !== undefined && o.password !== undefined
 }
 
+export const isSignupRequest = (o: any) => {
+  return o.username !== undefined && o.password !== undefined && o.email !== undefined
+}
+
 export const isUpdateWidgetRequest = isCreateWidgetRequest

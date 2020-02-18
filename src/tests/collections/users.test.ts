@@ -10,21 +10,21 @@ afterAll(async () => {
 })
 
 describe('users', () => {
-  const credentials = { username: 'TestUser', password: 'hunter2' }
+  const creds = { username: 'TestUser', password: 'hunter2', email: 'example@gmail.com' }
   describe('createUser', () => {
     it('Succeeds with a valid username and password', async () => {
-      const response = await createUser(credentials.username, credentials.password)
+      const response = await createUser(creds.username, creds.password, creds.email)
       expect(response.success).toBe(true)
     })
     it('Fails with a duplicate username', async () => {
-      const response = await createUser(credentials.username, credentials.password)
+      const response = await createUser(creds.username, creds.password, creds.email)
       expect(response.success).toBe(false)
     })
   })
   describe('login', () => {
     it('Succeeds if the user exists and password is correct', async () => {
       let success = false
-      await passportLogin(credentials.username, credentials.password, (err, user) => {
+      await passportLogin(creds.username, creds.password, (err, user) => {
         if (err) {
           throw err
         }
