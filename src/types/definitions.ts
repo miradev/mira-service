@@ -8,7 +8,7 @@ export interface IWidget {
   name: string
   description: string
   active: boolean
-  userId?: string
+  author?: string
 }
 
 export enum UserTags {

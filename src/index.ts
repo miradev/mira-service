@@ -58,6 +58,7 @@ app.get('/', (_, res) => {
 })
 
 app.post('/signup', async (req, res) => {
+  console.log(req.body)
   validate(req.body, isSignupRequest, validationFailed(res)) &&
     res.send(await createUser(req.body.username, req.body.password, req.body.email, req.body.dev))
 })
@@ -71,7 +72,6 @@ app.get('/logout', async (req, res) => {
   res.redirect('/')
 })
 
-// TODO: Add user information to widget creation
 app.post('/widgets', isAuth, async (req, res) => {
   const userId = (req.user as any)._id
   validate(req.body, isCreateWidgetRequest, validationFailed(res)) &&

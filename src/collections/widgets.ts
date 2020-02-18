@@ -16,7 +16,7 @@ const collection = (): Collection<IWidget> => {
 
 export const createWidget = (widget: IWidget, userId: string): Promise<CreateWidgetResponse> => {
   widget.active = true
-  widget.userId = userId
+  widget.author = userId
   return collection()
     .insertOne(widget)
     .then(newWidget => {
