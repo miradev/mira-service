@@ -1,4 +1,5 @@
 import express from 'express'
+import * as path from 'path'
 import { BaseResponse, UploadWidgetResponse } from './types/responses'
 
 export const validate = (
@@ -48,6 +49,26 @@ export const createUploadWidgetResponse = (file: Express.Multer.File): UploadWid
     success: false,
     description: 'There was no file uploaded',
   }
+}
+
+export const widgetFilter = (
+  req: Express.Request,
+  file: Express.Multer.File,
+  cb: (a: Error | null, b?: boolean) => void,
+): void => {
+  console.log(file)
+  if (file.mimetype in ['application/zip', 'application/octet-stream']) {
+    return cb(new Error('Only .zip is allowed'))
+  }
+  cb(null, true)
+}
+
+export const widgetName = (
+  req: Express.Request,
+  file: Express.Multer.File,
+  cb: (a: any, s?: any) => void,
+): void => {
+  cb(null, Date.now() + file.originalname)
 }
 
 export const createErrorResponse = (err: any): BaseResponse => {

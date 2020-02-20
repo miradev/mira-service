@@ -14,7 +14,7 @@ curl -X POST 'http://localhost:8000/signup' \
 curl -X POST --cookie-jar jarfile 'http://localhost:8000/login' \
 -H "Content-Type: application/json" \
 -d '{
-  "username": "User",
+  "username": "User2",
   "password": "hunter2"
 }' && echo
 

@@ -22,6 +22,8 @@ import {
   validate,
   validateId,
   validationFailed,
+  widgetFilter,
+  widgetName,
 } from './helpers'
 
 const app = express()
@@ -36,7 +38,10 @@ app.use((req, res, next) => {
 })
 // TODO: load from config
 const fileDir = 'uploads'
-const upload = multer({ dest: fileDir })
+const uploadWidget = multer({
+  storage: multer.diskStorage({ destination: fileDir, filename: widgetName }),
+  fileFilter: widgetFilter,
+})
 app.use(
   session({
     // TODO: add to config
@@ -84,7 +89,7 @@ app.get('/logout', async (req, res) => {
   res.redirect('/')
 })
 
-app.post('/widgets/upload', isAuth, upload.single('widget'), async (req, res) => {
+app.post('/widgets/upload', isAuth, uploadWidget.single('widget'), async (req, res) => {
   console.log(req.file)
   res.send(createUploadWidgetResponse(req.file))
 })
