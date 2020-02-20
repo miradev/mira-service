@@ -2,6 +2,7 @@ import { IWidget } from './types/definitions'
 
 export const isCreateWidgetRequest = (o: any): o is IWidget => {
   return (
+    o._id !== undefined &&
     o.name !== undefined &&
     o.description !== undefined &&
     o.active !== undefined &&

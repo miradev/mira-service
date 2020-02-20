@@ -1,4 +1,4 @@
-import { Collection, ObjectId } from 'mongodb'
+import { Collection } from 'mongodb'
 import { mongodb } from '../clients/mongodb'
 import { createErrorResponse } from '../helpers'
 import { Collections, IWidget } from '../types/definitions'
@@ -41,7 +41,7 @@ export const getAllWidgets = (): Promise<GetAllWidgetResponse> => {
     .catch(createErrorResponse)
 }
 
-export const getWidget = (id: ObjectId): Promise<GetWidgetResponse> => {
+export const getWidget = (id: string): Promise<GetWidgetResponse> => {
   return collection()
     .findOne({ _id: id, active: true })
     .then(widget => {
@@ -59,9 +59,12 @@ export const getWidget = (id: ObjectId): Promise<GetWidgetResponse> => {
     .catch(createErrorResponse)
 }
 
-export const updateWidget = (id: ObjectId, widget: IWidget): Promise<UpdateWidgetResponse> => {
+export const updateWidget = (id: string, widget: IWidget): Promise<UpdateWidgetResponse> => {
   return collection()
-    .updateOne({ _id: id, active: true }, { $set: { description: widget.description } })
+    .updateOne(
+      { _id: id, active: true },
+      { $set: { description: widget.description, images: widget.images, name: widget.name } },
+    )
     .then(res => {
       if (res.modifiedCount === 1) {
         return {
@@ -76,7 +79,7 @@ export const updateWidget = (id: ObjectId, widget: IWidget): Promise<UpdateWidge
     .catch(createErrorResponse)
 }
 
-export const deleteWidget = (id: ObjectId): Promise<DeleteWidgetResponse> => {
+export const deleteWidget = (id: string): Promise<DeleteWidgetResponse> => {
   return collection()
     .updateOne({ _id: id, active: true }, { $set: { active: false } })
     .then(res => {

@@ -5,6 +5,7 @@ export enum Collections {
 }
 
 export interface IWidget {
+  _id: string
   name: string
   description: string
   active: boolean

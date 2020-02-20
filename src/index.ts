@@ -16,13 +16,7 @@ import {
   updateWidget,
 } from './collections/widgets'
 import { isCreateWidgetRequest, isSignupRequest, isUpdateWidgetRequest } from './guards'
-import {
-  badObjectId,
-  createUploadWidgetResponse,
-  validate,
-  validateId,
-  validationFailed,
-} from './helpers'
+import { createUploadWidgetResponse, validate, validationFailed } from './helpers'
 
 const app = express()
 const port = config.get<number>('service.port')
@@ -109,19 +103,19 @@ app.get('/widgets', async (_, res) => {
 })
 
 app.get('/widgets/:id', async (req, res) => {
-  const id = validateId(req.params.id, badObjectId(res))
+  const id = req.params.id
   id && res.send(await getWidget(id))
 })
 
 app.put('/widgets/:id', isAuth, async (req, res) => {
-  const id = validateId(req.params.id, badObjectId(res))
+  const id = req.params.id
   id &&
     validate(req.body, isUpdateWidgetRequest, validationFailed(res)) &&
     res.send(await updateWidget(id, req.body))
 })
 
 app.delete('/widgets/:id', isAuth, async (req, res) => {
-  const id = validateId(req.params.id, badObjectId(res))
+  const id = req.params.id
   id && res.send(await deleteWidget(id))
 })
 

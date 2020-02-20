@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb'
 import { connectMongo, disconnectMongo } from '../../clients/mongodb'
 import {
   createWidget,
@@ -20,18 +19,19 @@ afterAll(async () => {
 
 describe('widgets', () => {
   const widget: IWidget = {
+    _id: 'clock',
     name: 'Clock',
     description: 'A clock application',
     active: false,
     filename: 'clock.zip',
     images: [],
   }
-  let id: ObjectId
+  let id: string
   describe('createWidget', () => {
     it('creates the widget', async () => {
       const response = (await createWidget(widget, '1')) as CreateWidgetSuccess
       expect(response.success).toEqual(true)
-      id = new ObjectId(response.id)
+      id = response.id
     })
   })
   describe('getAllWidget', () => {
@@ -48,13 +48,14 @@ describe('widgets', () => {
       expect(response.widget.active).toBe(true)
     })
     it('should fail if widget does not exist', async () => {
-      const response = await getWidget(new ObjectId('fff000fff000'))
+      const response = await getWidget('fff000fff000')
       expect(response.success).toEqual(false)
     })
   })
   describe('updateWidget', () => {
     it('updates the widget with a different description', async () => {
       const newWidget: IWidget = {
+        _id: 'clock',
         name: 'Clock',
         description: 'An updated description',
         active: false,

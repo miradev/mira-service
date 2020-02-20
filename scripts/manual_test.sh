@@ -30,6 +30,7 @@ curl -X POST --cookie jarfile 'http://localhost:8000/widgets/upload' \
 curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
 -H "Content-Type: application/json" \
 -d '{
+  "_id": "mira_weather",
   "name": "Mira Weather",
   "description": "This is the default weather app. Displays local weather conditions and temperatures.",
   "active": false,
@@ -40,6 +41,7 @@ curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
 curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
 -H "Content-Type: application/json" \
 -d '{
+  "_id": "mira_clock",
   "name": "Mira Clock",
   "description": "This is the default clock. Basic 7-segment display showing current time.",
   "active": false,
@@ -50,7 +52,8 @@ curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
 curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
 -H "Content-Type: application/json" \
 -d '{
-  "name": "Mira Calender",
+  "_id": "mira_calendar",
+  "name": "Mira Calendar",
   "description": "Sync with your preferred calendar application and shows your daily agenda.",
   "active": false,
   "filename": "calendar.zip",
