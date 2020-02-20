@@ -60,6 +60,18 @@ curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
   "images": ["https://images.unsplash.com/photo-1543168256-4ae2229821f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"]
 }' && echo
 
+# Widget with bad id
+curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
+-H "Content-Type: application/json" \
+-d '{
+  "_id": "mira calendar",
+  "name": "Mira Calendar",
+  "description": "Sync with your preferred calendar application and shows your daily agenda.",
+  "active": false,
+  "filename": "calendar.zip",
+  "images": ["https://images.unsplash.com/photo-1543168256-4ae2229821f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"]
+}' && echo
+
 # Update, should not be successful
 curl -X PUT --cookie jarfile 'http://localhost:8000/widgets/5e08e7d2d8c9b1285e8ebd3e' \
 -H "Content-Type: application/json" \

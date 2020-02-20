@@ -1,5 +1,4 @@
 import express from 'express'
-import { ObjectId } from 'mongodb'
 import { BaseResponse, UploadWidgetResponse } from './types/responses'
 
 export const validate = (
@@ -14,13 +13,14 @@ export const validate = (
   return false
 }
 
-export const validateId = (id: string, failureCallback?: () => void): ObjectId | null => {
-  try {
-    return new ObjectId(id)
-  } catch (_) {
-    failureCallback && failureCallback()
-    return null
+const validId = /[-_a-zA-Z0-9]+/
+export const validateId = (id: string, failureCallback?: () => void): string | null => {
+  const match = id.match(validId)
+  if (match && match[0] === id) {
+    return id
   }
+  failureCallback && failureCallback()
+  return null
 }
 
 export const validationFailed = (res: express.Response) => (): void => {

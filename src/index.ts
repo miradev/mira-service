@@ -16,7 +16,13 @@ import {
   updateWidget,
 } from './collections/widgets'
 import { isCreateWidgetRequest, isSignupRequest, isUpdateWidgetRequest } from './guards'
-import { createUploadWidgetResponse, validate, validationFailed } from './helpers'
+import {
+  badObjectId,
+  createUploadWidgetResponse,
+  validate,
+  validateId,
+  validationFailed,
+} from './helpers'
 
 const app = express()
 const port = config.get<number>('service.port')
@@ -95,6 +101,7 @@ app.get('/files/:id', (req, res) => {
 app.post('/widgets', isAuth, async (req, res) => {
   const userId = (req.user as any)._id
   validate(req.body, isCreateWidgetRequest, validationFailed(res)) &&
+    validateId(req.body._id, badObjectId(res)) &&
     res.send(await createWidget(req.body, userId))
 })
 
