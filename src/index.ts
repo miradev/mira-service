@@ -6,6 +6,7 @@ import multer from 'multer'
 import passport from 'passport'
 import * as passportLocal from 'passport-local'
 import * as path from 'path'
+import * as WebSocket from 'ws'
 import { connectMongo, createSessionStore } from './clients/mongodb'
 import { createDevice } from './collections/devices'
 import { createUser, passportLogin } from './collections/users'
@@ -16,6 +17,7 @@ import {
   getWidget,
   updateWidget,
 } from './collections/widgets'
+import { EventType, WebsocketEvent } from './events'
 import { isCreateWidgetRequest, isSignupRequest, isUpdateWidgetRequest } from './guards'
 import {
   badObjectId,
@@ -138,7 +140,28 @@ app.post('/users/:id/devices', isAuth, async (req, res) => {
   deviceName && res.send(await createDevice(deviceName, req.params.id))
 })
 
-app.listen(port, async () => {
+const server = app.listen(port, async () => {
   console.log(`Server started on port ${port}`)
   await connectMongo()
+})
+
+const wss = new WebSocket.Server({ server })
+
+wss.on('connection', (ws: WebSocket) => {
+  // connection is up, let's add a simple simple event
+  ws.on('message', (message: string) => {
+    // log the received message and send it back to the client
+    const event: WebsocketEvent = JSON.parse(message)
+    switch (event.type) {
+      case EventType.AUTH:
+        console.log('Auth event received')
+        break
+      case EventType.UPDATE:
+        console.log('Update event received')
+        break
+      default:
+        ws.send('Unrecognized event')
+    }
+    ws.send(message)
+  })
 })
