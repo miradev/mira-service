@@ -38,6 +38,9 @@ export const initDB = async () => {
   await mongodb()
     .collection(Collections.USERS)
     .createIndex({ username: 1 }, { unique: true })
+  await mongodb()
+    .collection(Collections.WIDGETS)
+    .createIndex({ authorId: 1 })
 }
 
 export const mongodb = (): Db => {

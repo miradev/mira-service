@@ -41,6 +41,19 @@ export const getAllWidgets = (): Promise<GetAllWidgetResponse> => {
     .catch(createErrorResponse)
 }
 
+export const getAllWidgetsByUserId = (userId: string): Promise<GetAllWidgetResponse> => {
+  return collection()
+    .find({ authorId: userId })
+    .toArray()
+    .then(documents => {
+      return {
+        success: true,
+        widgets: documents,
+      }
+    })
+    .catch(createErrorResponse)
+}
+
 export const getWidget = (id: string): Promise<GetWidgetResponse> => {
   return collection()
     .findOne({ _id: id, active: true })

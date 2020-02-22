@@ -81,6 +81,10 @@ curl -X PUT --cookie jarfile 'http://localhost:8000/widgets/5e08e7d2d8c9b1285e8e
   "active": false
 }' && echo
 
+# Widgets by userId 5e51889a42020e43a0726397
+curl -X GET --cookie jarfile 'http://localhost:8000/widgets?userId=5e51889a42020e43a0726397' \
+-H "Content-Type: application/json" && echo
+
 # Add device
 curl -X POST --cookie jarfile 'http://localhost:8000/users/5e51889a42020e43a0726397/devices' \
 -H "Content-Type: application/json" \

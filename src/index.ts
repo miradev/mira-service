@@ -14,6 +14,7 @@ import {
   createWidget,
   deleteWidget,
   getAllWidgets,
+  getAllWidgetsByUserId,
   getWidget,
   updateWidget,
 } from './collections/widgets'
@@ -107,13 +108,17 @@ app.get('/files/:id', (req, res) => {
 })
 
 app.post('/widgets', isAuth, async (req, res) => {
-  const userId = (req.user as any)._id
+  const userId = (req.user as any)._id.toHexString()
   validate(req.body, isCreateWidgetRequest, validationFailed(res)) &&
     validateId(req.body._id, badObjectId(res)) &&
     res.send(await createWidget(req.body, userId))
 })
 
-app.get('/widgets', async (_, res) => {
+app.get('/widgets', async (req, res) => {
+  const { userId } = req.params
+  if (userId !== undefined) {
+    return res.send(await getAllWidgetsByUserId(userId))
+  }
   res.send(await getAllWidgets())
 })
 
