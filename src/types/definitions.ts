@@ -2,6 +2,11 @@ export enum Collections {
   SESSIONS = 'sessions',
   WIDGETS = 'widgets',
   USERS = 'users',
+  DEVICES = 'devices',
+}
+
+export enum UserTags {
+  DEVELOPER = 'dev',
 }
 
 export interface IWidget {
@@ -9,13 +14,9 @@ export interface IWidget {
   name: string
   description: string
   active: boolean
-  author?: string
+  authorId: string
   filename: string
   images: string[]
-}
-
-export enum UserTags {
-  DEVELOPER = 'dev',
 }
 
 export interface IUser {
@@ -23,4 +24,22 @@ export interface IUser {
   email: string
   tags: UserTags[]
   hash: string
+  devices: string[]
+}
+
+export interface IDevice {
+  name: string
+  config: object
+  connection?: DeviceConnection
+  deviceWidgets: DeviceWidget[]
+}
+
+export interface DeviceConnection {
+  address: string
+  authToken: string
+}
+
+export interface DeviceWidget {
+  widgetId: string
+  config: object
 }

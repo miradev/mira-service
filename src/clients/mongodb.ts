@@ -44,6 +44,10 @@ export const mongodb = (): Db => {
   return connection.db(dbName)
 }
 
+export const getSession = () => {
+  return client.startSession()
+}
+
 export const disconnectMongo = async () => {
   return client.close()
 }

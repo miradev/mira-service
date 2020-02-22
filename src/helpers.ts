@@ -1,5 +1,4 @@
 import express from 'express'
-import * as path from 'path'
 import { BaseResponse, UploadWidgetResponse } from './types/responses'
 
 export const validate = (

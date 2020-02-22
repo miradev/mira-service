@@ -23,13 +23,14 @@ describe('widgets', () => {
     name: 'Clock',
     description: 'A clock application',
     active: false,
+    authorId: '1',
     filename: 'clock.zip',
     images: [],
   }
   let id: string
   describe('createWidget', () => {
     it('creates the widget', async () => {
-      const response = (await createWidget(widget, '1')) as CreateWidgetSuccess
+      const response = (await createWidget(widget, widget.authorId)) as CreateWidgetSuccess
       expect(response.success).toEqual(true)
       id = response.id
     })
@@ -59,6 +60,7 @@ describe('widgets', () => {
         name: 'Clock',
         description: 'An updated description',
         active: false,
+        authorId: '1',
         filename: 'clock.zip',
         images: [],
       }

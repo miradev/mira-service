@@ -7,6 +7,7 @@ import passport from 'passport'
 import * as passportLocal from 'passport-local'
 import * as path from 'path'
 import { connectMongo, createSessionStore } from './clients/mongodb'
+import { createDevice } from './collections/devices'
 import { createUser, passportLogin } from './collections/users'
 import {
   createWidget,
@@ -129,6 +130,12 @@ app.put('/widgets/:id', isAuth, async (req, res) => {
 app.delete('/widgets/:id', isAuth, async (req, res) => {
   const id = req.params.id
   id && res.send(await deleteWidget(id))
+})
+
+app.post('/users/:id/devices', isAuth, async (req, res) => {
+  console.log(req.body)
+  const deviceName = req.body.name
+  deviceName && res.send(await createDevice(deviceName, req.params.id))
 })
 
 app.listen(port, async () => {

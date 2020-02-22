@@ -1,5 +1,5 @@
 import { compare, genSalt, hash } from 'bcryptjs'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { mongodb } from '../clients/mongodb'
 import { createErrorResponse } from '../helpers'
 import { Collections, IUser, UserTags } from '../types/definitions'
@@ -46,6 +46,7 @@ export const createUser = (
         email,
         tags: dev ? [UserTags.DEVELOPER] : [],
         hash: hashed,
+        devices: [],
       }
     })
     .then(newUser => {
@@ -58,5 +59,13 @@ export const createUser = (
           }
         })
         .catch(createErrorResponse)
+    })
+}
+
+export const addDevice = (userId: string, deviceId: string) => {
+  return collection()
+    .updateOne({ _id: new ObjectId(userId) }, { $push: { devices: deviceId } })
+    .then(res => {
+      return res.modifiedCount === 1
     })
 }
