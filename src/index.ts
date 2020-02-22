@@ -136,13 +136,16 @@ app.put('/widgets/:id', isAuth, async (req, res) => {
 
 app.delete('/widgets/:id', isAuth, async (req, res) => {
   const id = req.params.id
-  id && res.send(await deleteWidget(id))
+  return id ? res.send(await deleteWidget(id)) : validationFailed(res)()
 })
 
 app.post('/users/:id/devices', isAuth, async (req, res) => {
   console.log(req.body)
   const deviceName = req.body.name
-  deviceName && res.send(await createDevice(deviceName, req.params.id))
+  const id = req.body._id
+  return deviceName && id
+    ? res.send(await createDevice(deviceName, id, req.params.id))
+    : validationFailed(res)()
 })
 
 const server = app.listen(port, async () => {

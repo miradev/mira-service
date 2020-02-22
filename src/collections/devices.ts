@@ -9,8 +9,13 @@ const collection = (): Collection<IDevice> => {
   return mongodb().collection(Collections.DEVICES)
 }
 
-export const createDevice = (name: string, userId: string): Promise<CreateDeviceResponse> => {
+export const createDevice = (
+  name: string,
+  deviceId: string,
+  userId: string,
+): Promise<CreateDeviceResponse> => {
   const device: IDevice = {
+    _id: deviceId,
     name,
     deviceWidgets: [],
     config: {},
@@ -27,7 +32,7 @@ export const createDevice = (name: string, userId: string): Promise<CreateDevice
       result = collection()
         .insertOne(device)
         .then(newDevice => {
-          return addDevice(userId, newDevice.insertedId.toHexString())
+          return addDevice(userId, newDevice.insertedId)
             .then(success => {
               if (success) {
                 return {

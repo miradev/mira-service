@@ -28,6 +28,7 @@ export interface IUser {
 }
 
 export interface IDevice {
+  _id: string
   name: string
   config: object
   connection?: DeviceConnection
