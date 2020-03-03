@@ -38,6 +38,7 @@ export interface GetUserSuccess extends BaseResponse {
 
 export type CreateUserResponse = CreateUserSuccess | BaseResponse
 export type GetUserResponse = GetUserSuccess | BaseResponse
+export type UpdateUserResponse = BaseResponse
 
 export interface CreateDeviceSuccess extends BaseResponse {
   id: string

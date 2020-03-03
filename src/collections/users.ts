@@ -3,7 +3,7 @@ import { Collection, ObjectId } from 'mongodb'
 import { mongodb } from '../clients/mongodb'
 import { createErrorResponse } from '../helpers'
 import { Collections, IUser, UserTags } from '../types/definitions'
-import { CreateUserResponse, GetUserResponse, GetUserSuccess } from '../types/responses'
+import { CreateUserResponse, GetUserResponse, UpdateUserResponse } from '../types/responses'
 
 const collection = (): Collection<IUser> => {
   return mongodb().collection(Collections.USERS)
@@ -77,6 +77,31 @@ export const createUser = (
         })
         .catch(createErrorResponse)
     })
+}
+
+export const updateUser = (userId: string, user: IUser): Promise<UpdateUserResponse> => {
+  return collection()
+    .updateOne(
+      { _id: new ObjectId(userId) },
+      {
+        $set: {
+          username: user.username,
+          email: user.email,
+        },
+      },
+    )
+    .then(res => {
+      if (res.modifiedCount === 1) {
+        return {
+          success: true,
+        }
+      }
+      return {
+        success: false,
+        description: 'Failed to update user',
+      }
+    })
+    .catch(createErrorResponse)
 }
 
 export const addDevice = (userId: string, deviceId: string) => {

@@ -9,7 +9,7 @@ import * as path from 'path'
 import * as WebSocket from 'ws'
 import { connectMongo, createSessionStore } from './clients/mongodb'
 import { createDevice, getDevice, updateDevice } from './collections/devices'
-import { createUser, getCurrentUser, passportLogin } from './collections/users'
+import { createUser, getCurrentUser, passportLogin, updateUser } from './collections/users'
 import {
   createWidget,
   deleteWidget,
@@ -96,6 +96,11 @@ app.get('/logout', async (req, res) => {
 app.get('/currentUser', isAuth, async (req, res) => {
   const userId = (req.user as any)._id.toHexString()
   return userId ? res.send(await getCurrentUser(userId)) : validationFailed(res)()
+})
+
+app.put('/currentUser', isAuth, async (req, res) => {
+  const userId = (req.user as any)._id.toHexString()
+  return userId ? res.send(await updateUser(userId, req.body)) : validationFailed(res)()
 })
 
 app.post('/widgets/upload', isAuth, uploadWidget.single('widget'), async (req, res) => {
