@@ -1,4 +1,4 @@
-import { IWidget } from './definitions'
+import { IDevice, IWidget } from './definitions'
 
 export interface BaseResponse {
   success: boolean
@@ -38,4 +38,13 @@ export interface CreateDeviceSuccess extends BaseResponse {
   id: string
 }
 
+export interface GetDeviceSuccess extends BaseResponse {
+  device: IDevice
+}
+
+export interface GetDeviceWidgetsSuccess extends BaseResponse {
+  widgets: IWidget[]
+}
+
 export type CreateDeviceResponse = CreateDeviceSuccess | BaseResponse
+export type GetDeviceResponse = GetDeviceSuccess | BaseResponse

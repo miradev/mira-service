@@ -76,7 +76,14 @@ export const updateWidget = (id: string, widget: IWidget): Promise<UpdateWidgetR
   return collection()
     .updateOne(
       { _id: id, active: true },
-      { $set: { description: widget.description, images: widget.images, name: widget.name } },
+      {
+        $set: {
+          description: widget.description,
+          images: widget.images,
+          name: widget.name,
+          filename: widget.filename,
+        },
+      },
     )
     .then(res => {
       if (res.modifiedCount === 1) {

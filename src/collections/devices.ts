@@ -2,8 +2,8 @@ import { Collection, TransactionOptions } from 'mongodb'
 import { getSession, mongodb } from '../clients/mongodb'
 import { createErrorResponse } from '../helpers'
 import { Collections, IDevice } from '../types/definitions'
-import { CreateDeviceResponse } from '../types/responses'
-import { addDevice } from './users'
+import { CreateDeviceResponse, GetDeviceResponse } from '../types/responses'
+import { addDevice, hasDevice } from './users'
 
 const collection = (): Collection<IDevice> => {
   return mongodb().collection(Collections.DEVICES)
@@ -40,10 +40,7 @@ export const createDevice = (
                   success: true,
                 }
               } else {
-                return {
-                  success: false,
-                  description: 'Could not update user profile',
-                }
+                throw new Error('Could not update user profile')
               }
             })
             .catch(createErrorResponse)
@@ -52,5 +49,33 @@ export const createDevice = (
     }, transactionOptions)
     .then(() => {
       return result
+    }).catch(createErrorResponse)
+}
+
+export const getDevice = (userId: string, deviceId: string): Promise<GetDeviceResponse> => {
+  return hasDevice(userId, deviceId)
+    .then(exists => {
+      if (exists) {
+        return collection()
+          .findOne({ _id: deviceId })
+          .then(device => {
+            if (device) {
+              return {
+                success: true,
+                device,
+              }
+            }
+            return {
+              success: false,
+              description: 'Device does not exist',
+            }
+          })
+      } else {
+        return {
+          success: false,
+          description: 'You do not own this device',
+        }
+      }
     })
+    .catch(createErrorResponse)
 }

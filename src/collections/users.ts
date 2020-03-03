@@ -69,3 +69,9 @@ export const addDevice = (userId: string, deviceId: string) => {
       return res.modifiedCount === 1
     })
 }
+
+export const hasDevice = (userId: string, deviceId: string): Promise<boolean> => {
+  return collection()
+    .findOne({ _id: new ObjectId(userId), devices: deviceId })
+    .then(user => !!user)
+}
