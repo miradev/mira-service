@@ -96,5 +96,13 @@ curl -X POST --cookie jarfile 'http://localhost:8000/users/5e5eda40d5c09c19e0b26
 curl -X GET --cookie jarfile 'http://localhost:8000/users/5e5eda40d5c09c19e0b26b32/devices/124' \
 -H "Content-Type: application/json" && echo
 
+curl -X PUT --cookie jarfile 'http://localhost:8000/users/5e5eda40d5c09c19e0b26b32/devices/124' \
+-H "Content-Type: application/json" \
+-d '{
+  "name": "My bedroom mirror updated",
+  "_id" : "124",
+  "config": {"someConfig": true}
+}' && echo
+
 #curl -X DELETE 'http://localhost:8000/widgets/5e06c542b9593c81c8f6bf22' && echo
 rm widget.zip

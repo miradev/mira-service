@@ -8,7 +8,7 @@ import * as passportLocal from 'passport-local'
 import * as path from 'path'
 import * as WebSocket from 'ws'
 import { connectMongo, createSessionStore } from './clients/mongodb'
-import { createDevice, getDevice } from './collections/devices'
+import { createDevice, getDevice, updateDevice } from './collections/devices'
 import { createUser, passportLogin } from './collections/users'
 import {
   createWidget,
@@ -149,10 +149,18 @@ app.post('/users/:id/devices', isAuth, async (req, res) => {
 })
 
 app.get('/users/:userId/devices/:deviceId', isAuth, async (req, res) => {
-  console.log(req.user)
+  console.log('Get device request', req.user)
   const userId = (req.user as any)._id.toHexString()
   const deviceId = req.params.deviceId
   return userId && deviceId ? res.send(await getDevice(userId, deviceId)) : validationFailed(res)()
+})
+
+app.put('/users/:userId/devices/:deviceId', isAuth, async (req, res) => {
+  const userId = (req.user as any)._id.toHexString()
+  const deviceId = req.params.deviceId
+  return userId && deviceId
+    ? res.send(await updateDevice(userId, deviceId, req.body))
+    : validationFailed(res)()
 })
 
 const server = app.listen(port, async () => {

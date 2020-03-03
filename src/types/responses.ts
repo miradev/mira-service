@@ -48,3 +48,4 @@ export interface GetDeviceWidgetsSuccess extends BaseResponse {
 
 export type CreateDeviceResponse = CreateDeviceSuccess | BaseResponse
 export type GetDeviceResponse = GetDeviceSuccess | BaseResponse
+export type UpdateDeviceResponse = BaseResponse

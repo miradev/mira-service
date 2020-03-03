@@ -2,7 +2,7 @@ import { Collection, TransactionOptions } from 'mongodb'
 import { getSession, mongodb } from '../clients/mongodb'
 import { createErrorResponse } from '../helpers'
 import { Collections, IDevice } from '../types/definitions'
-import { CreateDeviceResponse, GetDeviceResponse } from '../types/responses'
+import { CreateDeviceResponse, GetDeviceResponse, UpdateDeviceResponse } from '../types/responses'
 import { addDevice, hasDevice } from './users'
 
 const collection = (): Collection<IDevice> => {
@@ -49,7 +49,8 @@ export const createDevice = (
     }, transactionOptions)
     .then(() => {
       return result
-    }).catch(createErrorResponse)
+    })
+    .catch(createErrorResponse)
 }
 
 export const getDevice = (userId: string, deviceId: string): Promise<GetDeviceResponse> => {
@@ -75,6 +76,44 @@ export const getDevice = (userId: string, deviceId: string): Promise<GetDeviceRe
           success: false,
           description: 'You do not own this device',
         }
+      }
+    })
+    .catch(createErrorResponse)
+}
+
+export const updateDevice = (
+  userId: string,
+  deviceId: string,
+  device: IDevice,
+): Promise<UpdateDeviceResponse> => {
+  return hasDevice(userId, deviceId)
+    .then(exists => {
+      if (exists) {
+        return collection()
+          .updateOne(
+            { _id: deviceId },
+            {
+              $set: {
+                name: device.name,
+                config: device.config,
+              },
+            },
+          )
+          .then(res => {
+            if (res.modifiedCount === 1) {
+              return {
+                success: true,
+              }
+            }
+            return {
+              success: false,
+              description: 'Failed to update device',
+            }
+          })
+      }
+      return {
+        success: false,
+        description: 'You do not own this device',
       }
     })
     .catch(createErrorResponse)
