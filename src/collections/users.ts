@@ -3,7 +3,7 @@ import { Collection, ObjectId } from 'mongodb'
 import { mongodb } from '../clients/mongodb'
 import { createErrorResponse } from '../helpers'
 import { Collections, IUser, UserTags } from '../types/definitions'
-import { CreateUserResponse } from '../types/responses'
+import { CreateUserResponse, GetUserResponse, GetUserSuccess } from '../types/responses'
 
 const collection = (): Collection<IUser> => {
   return mongodb().collection(Collections.USERS)
@@ -28,6 +28,23 @@ export const passportLogin = (
       return done(null, false)
     })
     .catch(done)
+}
+
+export const getCurrentUser = (id: string): Promise<GetUserResponse> => {
+  return collection()
+    .findOne({ _id: new ObjectId(id) })
+    .then(user => {
+      if (user) {
+        return {
+          success: true,
+          user,
+        }
+      }
+      return {
+        success: false,
+      }
+    })
+    .catch(createErrorResponse)
 }
 
 export const createUser = (

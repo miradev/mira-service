@@ -18,6 +18,9 @@ curl -X POST --cookie-jar jarfile 'http://localhost:8000/login' \
   "password": "hunter2"
 }' && echo
 
+curl -X GET --cookie jarfile 'http://localhost:8000/currentUser' \
+-H "Content-Type: application/json" && echo
+
 #curl --cookie-jar jarfile --data "{username=User&password=hunter2}" http://localhost:8000/login && echo
 
 echo "I am a widget" >> widget.zip
