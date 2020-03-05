@@ -1,4 +1,5 @@
 import { compare, encodeBase64, genSalt, hash } from 'bcryptjs'
+import * as crypto from 'crypto'
 import { Collection } from 'mongodb'
 import { mongodb } from '../clients/mongodb'
 import { EventType, WebsocketEvent } from '../sockets/events'
@@ -9,15 +10,14 @@ const collection = (): Collection<DeviceConnection> => {
 }
 
 export const connectDevice = (deviceId: string): Promise<WebsocketEvent> => {
-  const arr = new Uint32Array(128)
-  window.crypto.getRandomValues<Uint32Array>(arr)
+  const arr = crypto.randomBytes(256)
   const authToken = encodeBase64(arr, 128)
   return genSalt()
     .then(salt => {
       return hash(authToken, salt)
     })
     .then(hashed => {
-      return collection().replaceOne({ deviceId }, { deviceId, hash: hashed })
+      return collection().insert({ deviceId, hash: hashed })
     })
     .then(() => {
       return {
