@@ -32,7 +32,7 @@ export const passportLogin = (
 
 export const getCurrentUser = (id: string): Promise<GetUserResponse> => {
   return collection()
-    .findOne({ _id: new ObjectId(id) })
+    .findOne({ _id: new ObjectId(id) }, { projection: { hash: 0 } })
     .then(user => {
       if (user) {
         return {

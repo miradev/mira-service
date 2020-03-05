@@ -96,7 +96,7 @@ app.post('/signup', async (req, res) => {
 })
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {
-  res.send(req.user)
+  res.send({ success: true })
 })
 
 app.get('/logout', async (req, res) => {
