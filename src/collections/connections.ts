@@ -17,7 +17,7 @@ export const connectDevice = (deviceId: string): Promise<WebsocketEvent> => {
       return hash(authToken, salt)
     })
     .then(hashed => {
-      return collection().insert({ deviceId, hash: hashed })
+      return collection().updateOne({ deviceId }, { deviceId, hash: hashed }, { upsert: true })
     })
     .then(() => {
       return {
