@@ -1,6 +1,7 @@
 import { Collection, TransactionOptions } from 'mongodb'
 import { getSession, mongodb } from '../clients/mongodb'
 import { createErrorResponse } from '../helpers'
+import { EventType, WebsocketEvent } from '../sockets/events'
 import { Collections, IDevice, IUser } from '../types/definitions'
 import {
   CreateDeviceResponse,
@@ -9,6 +10,7 @@ import {
   UpdateDeviceResponse,
 } from '../types/responses'
 import { addDevice, getCurrentUser, hasDevice } from './users'
+import { getFileNameMap } from './widgets'
 
 const collection = (): Collection<IDevice> => {
   return mongodb().collection(Collections.DEVICES)
@@ -132,4 +134,28 @@ export const updateDevice = (
       }
     })
     .catch(createErrorResponse)
+}
+
+export const pushUpdate = (deviceId: string): Promise<WebsocketEvent> => {
+  return collection()
+    .findOne({ _id: deviceId })
+    .then(device => {
+      if (device) {
+        return getFileNameMap(...device.deviceWidgets.map(dw => dw.widgetId)).then(fileNameMap => {
+          return new Map<string, object>(
+            device.deviceWidgets.map(dw => [
+              dw.widgetId,
+              { fileName: fileNameMap.get(dw.widgetId), config: dw.config },
+            ]),
+          )
+        })
+      }
+      throw new Error('Device not found for update')
+    })
+    .then(aggr => {
+      return {
+        type: EventType.UPDATE,
+        data: aggr,
+      }
+    })
 }

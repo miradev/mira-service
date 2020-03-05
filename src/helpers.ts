@@ -46,6 +46,14 @@ export const socketNotFound = (res: express.Response) => (): void => {
   })
 }
 
+export const socketNotAuthorized = (res: express.Response) => (): void => {
+  res.send({
+    success: false,
+    description:
+      'Device with the provided deviceId is not authorized. Make sure the widget is connected',
+  })
+}
+
 export const createUploadWidgetResponse = (
   file: Express.Multer.File,
 ): Promise<UploadWidgetResponse> => {

@@ -9,7 +9,13 @@ import * as path from 'path'
 import * as WebSocket from 'ws'
 import { connectMongo, createSessionStore } from './clients/mongodb'
 import { connectDevice } from './collections/connections'
-import { createDevice, getAllDevices, getDevice, updateDevice } from './collections/devices'
+import {
+  createDevice,
+  getAllDevices,
+  getDevice,
+  pushUpdate,
+  updateDevice,
+} from './collections/devices'
 import {
   createUser,
   getCurrentUser,
@@ -29,6 +35,7 @@ import { isCreateWidgetRequest, isSignupRequest, isUpdateWidgetRequest } from '.
 import {
   badObjectId,
   createUploadWidgetResponse,
+  socketNotAuthorized,
   socketNotFound,
   validate,
   validateId,
@@ -207,6 +214,23 @@ app.post('/users/:userId/devices/:deviceId/connect', isAuth, async (req, res) =>
     }
   } else {
     socketNotFound(res)
+  }
+})
+
+app.post('/users/:userId/devices/:deviceId/update', isAuth, async (req, res) => {
+  const userId = (req.user as any)._id.toHexString()
+  const deviceId = req.params.deviceId
+  if (connections.isAuth(deviceId)) {
+    if (userId && (await hasDevice(userId, deviceId))) {
+      const socketMessage = await pushUpdate(deviceId)
+      connections.send(deviceId, socketMessage)
+      connections.disconnect(deviceId)
+      res.send({ success: true })
+    } else {
+      validationFailed(res)()
+    }
+  } else {
+    socketNotAuthorized(res)
   }
 })
 
