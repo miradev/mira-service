@@ -8,8 +8,15 @@ import * as passportLocal from 'passport-local'
 import * as path from 'path'
 import * as WebSocket from 'ws'
 import { connectMongo, createSessionStore } from './clients/mongodb'
+import { connectDevice } from './collections/connections'
 import { createDevice, getDevice, updateDevice } from './collections/devices'
-import { createUser, getCurrentUser, passportLogin, updateUser } from './collections/users'
+import {
+  createUser,
+  getCurrentUser,
+  hasDevice,
+  passportLogin,
+  updateUser,
+} from './collections/users'
 import {
   createWidget,
   deleteWidget,
@@ -18,18 +25,21 @@ import {
   getWidget,
   updateWidget,
 } from './collections/widgets'
-import { EventType, WebsocketEvent } from './events'
 import { isCreateWidgetRequest, isSignupRequest, isUpdateWidgetRequest } from './guards'
 import {
   badObjectId,
   createUploadWidgetResponse,
+  socketNotFound,
   validate,
   validateId,
   validationFailed,
   widgetFilter,
   widgetName,
 } from './helpers'
+import { EventType, WebsocketEvent } from './sockets/events'
+import { WebSocketConnections } from './sockets/sockets'
 
+const connections = new WebSocketConnections()
 const app = express()
 const port = config.get<number>('service.port')
 app.use(express.json())
@@ -173,6 +183,23 @@ app.put('/users/:userId/devices/:deviceId', isAuth, async (req, res) => {
     : validationFailed(res)()
 })
 
+app.post('/users/:userId/devices/:deviceId/connect', isAuth, async (req, res) => {
+  const userId = (req.user as any)._id.toHexString()
+  const deviceId = req.params.deviceId
+  if (connections.has(deviceId)) {
+    if (userId && (await hasDevice(userId, deviceId))) {
+      const socketMessage = await connectDevice(deviceId)
+      connections.send(deviceId, socketMessage)
+      connections.disconnect(deviceId)
+      res.send({ success: true })
+    } else {
+      validationFailed(res)()
+    }
+  } else {
+    socketNotFound(res)
+  }
+})
+
 const server = app.listen(port, async () => {
   console.log(`Server started on port ${port}`)
   await connectMongo()
@@ -185,16 +212,18 @@ wss.on('connection', (ws: WebSocket) => {
   ws.on('message', (message: string) => {
     // log the received message and send it back to the client
     const event: WebsocketEvent = JSON.parse(message)
-    switch (event.type) {
-      case EventType.AUTH:
-        console.log('Auth event received')
-        break
-      case EventType.UPDATE:
-        console.log('Update event received')
-        break
-      default:
-        ws.send('Unrecognized event')
+    const type = event.type
+    if (type === EventType.REGISTER) {
+      console.log('Register event received')
+      const { deviceId } = event.data
+      connections.register(deviceId, ws)
+    } else if (type === EventType.AUTH) {
+      console.log('Auth event received')
+      const { deviceId, token } = event.data
+      connections.auth(deviceId, token, ws)
+    } else {
+      ws.send('Unrecognized event')
     }
-    ws.send(message)
+    console.log(event)
   })
 })

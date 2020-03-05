@@ -41,6 +41,9 @@ export const initDB = async () => {
   await mongodb()
     .collection(Collections.WIDGETS)
     .createIndex({ authorId: 1 })
+  await mongodb()
+    .collection(Collections.CONNECTIONS)
+    .createIndex({ deviceId: 1 })
 }
 
 export const mongodb = (): Db => {

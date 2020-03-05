@@ -37,6 +37,13 @@ export const badObjectId = (res: express.Response) => (): void => {
   })
 }
 
+export const socketNotFound = (res: express.Response) => (): void => {
+  res.send({
+    success: false,
+    description: 'Device with the provided deviceId could not be found',
+  })
+}
+
 export const createUploadWidgetResponse = (file: Express.Multer.File): UploadWidgetResponse => {
   if (file) {
     return {
