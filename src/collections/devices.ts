@@ -1,9 +1,14 @@
 import { Collection, TransactionOptions } from 'mongodb'
 import { getSession, mongodb } from '../clients/mongodb'
 import { createErrorResponse } from '../helpers'
-import { Collections, IDevice } from '../types/definitions'
-import { CreateDeviceResponse, GetDeviceResponse, UpdateDeviceResponse } from '../types/responses'
-import { addDevice, hasDevice } from './users'
+import { Collections, IDevice, IUser } from '../types/definitions'
+import {
+  CreateDeviceResponse,
+  GetDeviceResponse,
+  GetUserSuccess,
+  UpdateDeviceResponse,
+} from '../types/responses'
+import { addDevice, getCurrentUser, hasDevice } from './users'
 
 const collection = (): Collection<IDevice> => {
   return mongodb().collection(Collections.DEVICES)
@@ -79,6 +84,16 @@ export const getDevice = (userId: string, deviceId: string): Promise<GetDeviceRe
       }
     })
     .catch(createErrorResponse)
+}
+
+export const getAllDevices = (userId: string): Promise<string[]> => {
+  return getCurrentUser(userId).then(res => {
+    const user: IUser = (res as GetUserSuccess).user
+    if (user) {
+      return user.devices
+    }
+    return []
+  })
 }
 
 export const updateDevice = (

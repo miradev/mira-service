@@ -9,7 +9,7 @@ import * as path from 'path'
 import * as WebSocket from 'ws'
 import { connectMongo, createSessionStore } from './clients/mongodb'
 import { connectDevice } from './collections/connections'
-import { createDevice, getDevice, updateDevice } from './collections/devices'
+import { createDevice, getAllDevices, getDevice, updateDevice } from './collections/devices'
 import {
   createUser,
   getCurrentUser,
@@ -38,6 +38,7 @@ import {
 } from './helpers'
 import { EventType, WebsocketEvent } from './sockets/events'
 import { WebSocketConnections } from './sockets/sockets'
+import { GetDevicesResponse } from './types/responses'
 
 const connections = new WebSocketConnections()
 const app = express()
@@ -173,6 +174,15 @@ app.get('/users/:userId/devices/:deviceId', isAuth, async (req, res) => {
   const userId = (req.user as any)._id.toHexString()
   const deviceId = req.params.deviceId
   return userId && deviceId ? res.send(await getDevice(userId, deviceId)) : validationFailed(res)()
+})
+
+app.get('/users/:userId/devices', isAuth, async (req, res) => {
+  const userId = (req.user as any)._id.toHexString()
+  const deviceStatuses: GetDevicesResponse = {
+    success: true,
+    devices: connections.deviceStatuses(await getAllDevices(userId)),
+  }
+  res.send(deviceStatuses)
 })
 
 app.put('/users/:userId/devices/:deviceId', isAuth, async (req, res) => {

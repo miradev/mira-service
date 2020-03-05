@@ -45,6 +45,10 @@ export class WebSocketConnections {
     }
   }
 
+  public deviceStatuses = (devices: string[]): Map<string, boolean | undefined> => {
+    return new Map(devices.map(device => [device, this.get(device)?.isAuth]))
+  }
+
   public disconnect(deviceId: string) {
     const conn = this.connections.get(deviceId)
     conn && conn.socket.close()

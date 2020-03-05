@@ -53,6 +53,11 @@ export interface GetDeviceWidgetsSuccess extends BaseResponse {
   widgets: IWidget[]
 }
 
+export interface GetDevicesSuccess extends BaseResponse {
+  devices: Map<string, boolean | undefined>
+}
+
 export type CreateDeviceResponse = CreateDeviceSuccess | BaseResponse
 export type GetDeviceResponse = GetDeviceSuccess | BaseResponse
 export type UpdateDeviceResponse = BaseResponse
+export type GetDevicesResponse = GetDevicesSuccess | BaseResponse
