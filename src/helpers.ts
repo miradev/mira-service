@@ -58,8 +58,8 @@ export const createUploadWidgetResponse = (
           manifest: JSON.parse(manifest),
         }
       })
-      .catch(e => {
-        return { success: false, description: 'Error reading manifest from zip'}
+      .catch(() => {
+        return { success: false, description: 'Error reading manifest from zip' }
       })
   }
   return Promise.resolve({
