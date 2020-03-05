@@ -115,7 +115,7 @@ app.put('/currentUser', isAuth, async (req, res) => {
 
 app.post('/widgets/upload', isAuth, uploadWidget.single('widget'), async (req, res) => {
   console.log(req.file)
-  res.send(createUploadWidgetResponse(req.file))
+  res.send(await createUploadWidgetResponse(req.file))
 })
 
 app.get('/files/:id', (req, res) => {

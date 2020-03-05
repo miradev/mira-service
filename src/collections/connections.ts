@@ -3,9 +3,9 @@ import * as crypto from 'crypto'
 import { Collection } from 'mongodb'
 import { mongodb } from '../clients/mongodb'
 import { EventType, WebsocketEvent } from '../sockets/events'
-import { Collections, DeviceConnection } from '../types/definitions'
+import { Collections, IDeviceConnection } from '../types/definitions'
 
-const collection = (): Collection<DeviceConnection> => {
+const collection = (): Collection<IDeviceConnection> => {
   return mongodb().collection(Collections.CONNECTIONS)
 }
 

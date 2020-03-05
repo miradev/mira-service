@@ -64,6 +64,7 @@ export const createUser = (
         tags: dev ? [UserTags.DEVELOPER] : [],
         hash: hashed,
         devices: [],
+        favorites: [],
       }
     })
     .then(newUser => {
@@ -87,6 +88,7 @@ export const updateUser = (userId: string, user: IUser): Promise<UpdateUserRespo
         $set: {
           username: user.username,
           email: user.email,
+          favorites: user.favorites,
         },
       },
     )

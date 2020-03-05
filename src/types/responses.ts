@@ -7,6 +7,7 @@ export interface BaseResponse {
 
 export interface UploadWidgetSuccess extends BaseResponse {
   filename: string
+  manifest: object
 }
 
 export interface CreateWidgetSuccess extends BaseResponse {

@@ -82,6 +82,7 @@ export const updateWidget = (id: string, widget: IWidget): Promise<UpdateWidgetR
           images: widget.images,
           name: widget.name,
           filename: widget.filename,
+          manifest: widget.manifest,
         },
       },
     )

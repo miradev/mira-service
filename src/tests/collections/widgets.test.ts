@@ -26,6 +26,7 @@ describe('widgets', () => {
     authorId: '1',
     filename: 'clock.zip',
     images: [],
+    manifest: {},
   }
   let id: string
   describe('createWidget', () => {
@@ -63,6 +64,7 @@ describe('widgets', () => {
         authorId: '1',
         filename: 'clock.zip',
         images: [],
+        manifest: {},
       }
       const response = await updateWidget(id, newWidget)
       expect(response.success).toEqual(true)

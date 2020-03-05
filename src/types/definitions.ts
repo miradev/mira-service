@@ -18,6 +18,7 @@ export interface IWidget {
   authorId: string
   filename: string
   images: string[]
+  manifest: object
 }
 
 export interface IUser {
@@ -26,6 +27,7 @@ export interface IUser {
   tags: UserTags[]
   hash: string
   devices: string[]
+  favorites: string[]
 }
 
 export interface IDevice {
@@ -35,7 +37,7 @@ export interface IDevice {
   deviceWidgets: DeviceWidget[]
 }
 
-export interface DeviceConnection {
+export interface IDeviceConnection {
   deviceId: string
   hash: string
 }
