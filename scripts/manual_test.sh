@@ -44,8 +44,10 @@ curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
   "name": "Mira Weather",
   "description": "This is the default weather app. Displays local weather conditions and temperatures.",
   "active": false,
+  "tags": [],
   "filename": "weather.zip",
-  "images": ["https://images.unsplash.com/photo-1508697014387-db70aad34f4d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"]
+  "images": ["https://images.unsplash.com/photo-1508697014387-db70aad34f4d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80"],
+  "manifest": {}
 }' && echo
 
 curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
@@ -55,8 +57,10 @@ curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
   "name": "Mira Clock",
   "description": "This is the default clock. Basic 7-segment display showing current time.",
   "active": false,
+  "tags": [],
   "filename": "clock.zip",
-  "images": ["https://images.unsplash.com/photo-1547908068-b3c55fdda5be?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1652&q=80"]
+  "images": ["https://images.unsplash.com/photo-1547908068-b3c55fdda5be?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1652&q=80"],
+  "manifest": {}
 }' && echo
 
 curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
@@ -66,8 +70,10 @@ curl -X POST --cookie jarfile 'http://localhost:8000/widgets' \
   "name": "Mira Calendar",
   "description": "Sync with your preferred calendar application and shows your daily agenda.",
   "active": false,
+  "tags": [],
   "filename": "calendar.zip",
-  "images": ["https://images.unsplash.com/photo-1543168256-4ae2229821f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"]
+  "images": ["https://images.unsplash.com/photo-1543168256-4ae2229821f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"],
+  "manifest": {}
 }' && echo
 
 # Widget with bad id

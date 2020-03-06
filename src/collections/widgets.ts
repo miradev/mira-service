@@ -79,6 +79,7 @@ export const updateWidget = (id: string, widget: IWidget): Promise<UpdateWidgetR
       {
         $set: {
           description: widget.description,
+          tags: widget.tags,
           images: widget.images,
           name: widget.name,
           filename: widget.filename,

@@ -25,6 +25,7 @@ describe('widgets', () => {
     active: false,
     authorId: '1',
     filename: 'clock.zip',
+    tags: [],
     images: [],
     manifest: {},
   }
@@ -63,6 +64,7 @@ describe('widgets', () => {
         active: false,
         authorId: '1',
         filename: 'clock.zip',
+        tags: [],
         images: [],
         manifest: {},
       }

@@ -10,6 +10,14 @@ export enum UserTags {
   DEVELOPER = 'dev',
 }
 
+export enum WidgetTags {
+  ACCESSORY = 'accessory',
+  GAME = 'game',
+  NEWS = 'news',
+  SOCIAL = 'social',
+  UTILITY = 'utility',
+}
+
 export interface IWidget {
   _id: string
   name: string
@@ -17,6 +25,7 @@ export interface IWidget {
   active: boolean
   authorId: string
   filename: string
+  tags: WidgetTags[]
   images: string[]
   manifest: object
 }
