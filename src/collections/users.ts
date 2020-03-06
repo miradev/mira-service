@@ -20,6 +20,7 @@ export const passportLogin = (
       if (user) {
         return compare(password, user.hash).then(success => {
           if (success) {
+            delete user.hash
             return done(null, user)
           }
           return done(null, false)
