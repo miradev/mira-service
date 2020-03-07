@@ -113,6 +113,7 @@ export const updateDevice = (
               $set: {
                 name: device.name,
                 config: device.config,
+                deviceWidgets: device.deviceWidgets,
               },
             },
           )
