@@ -17,7 +17,11 @@ export const connectDevice = (deviceId: string): Promise<WebsocketEvent> => {
       return hash(authToken, salt)
     })
     .then(hashed => {
-      return collection().updateOne({ deviceId }, { deviceId, hash: hashed }, { upsert: true })
+      return collection().updateOne(
+        { deviceId },
+        { $set: { deviceId, hash: hashed } },
+        { upsert: true },
+      )
     })
     .then(() => {
       return {
