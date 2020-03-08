@@ -221,7 +221,9 @@ app.post('/users/:userId/devices/:deviceId/update', isAuth, async (req, res) => 
   const userId = (req.user as any)._id.toHexString()
   const deviceId = req.params.deviceId
   if (connections.isAuth(deviceId)) {
+    console.log("Auth success")
     if (userId && (await hasDevice(userId, deviceId))) {
+      console.log('validated user has device')
       const socketMessage = await pushUpdate(deviceId)
       connections.send(deviceId, socketMessage)
       connections.disconnect(deviceId)

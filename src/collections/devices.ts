@@ -143,6 +143,7 @@ export const pushUpdate = (deviceId: string): Promise<WebsocketEvent> => {
     .then(device => {
       if (device) {
         return getFileNameMap(...device.deviceWidgets.map(dw => dw.widgetId)).then(fileNameMap => {
+          console.log(fileNameMap)
           return new Map<string, object>(
             device.deviceWidgets.map(dw => [
               dw.widgetId,
@@ -154,6 +155,7 @@ export const pushUpdate = (deviceId: string): Promise<WebsocketEvent> => {
       throw new Error('Device not found for update')
     })
     .then(aggr => {
+      console.log(aggr)
       return {
         type: EventType.UPDATE,
         data: aggr,
