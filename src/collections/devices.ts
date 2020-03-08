@@ -137,25 +137,35 @@ export const updateDevice = (
     .catch(createErrorResponse)
 }
 
+interface DeviceWidget {
+  [widgetId: string]: {
+    fileName: string
+    config: object
+  }
+}
+
 export const pushUpdate = (deviceId: string): Promise<WebsocketEvent> => {
   return collection()
     .findOne({ _id: deviceId })
     .then(device => {
       if (device) {
         return getFileNameMap(...device.deviceWidgets.map(dw => dw.widgetId)).then(fileNameMap => {
-          console.log(fileNameMap)
-          return new Map<string, object>(
-            device.deviceWidgets.map(dw => [
-              dw.widgetId,
-              { fileName: fileNameMap.get(dw.widgetId), config: dw.config },
-            ]),
-          )
+          return {
+            ...(device.deviceWidgets.map(dw => {
+              return {
+                [dw.widgetId]: { fileName: fileNameMap.get(dw.widgetId)!, config: dw.config }
+              }
+            }) as DeviceWidget[])
+          }
         })
       }
       throw new Error('Device not found for update')
     })
     .then(aggr => {
-      console.log(aggr)
+      console.log({
+        type: EventType.UPDATE,
+        data: aggr,
+      })
       return {
         type: EventType.UPDATE,
         data: aggr,
