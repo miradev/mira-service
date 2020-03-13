@@ -143,7 +143,7 @@ app.post('/widgets', isAuth, async (req, res) => {
 })
 
 app.get('/widgets', async (req, res) => {
-  const { userId } = req.params
+  const { userId } = req.query
   if (userId !== undefined) {
     return res.send(await getAllWidgetsByUserId(userId))
   }
