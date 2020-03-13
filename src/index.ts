@@ -203,34 +203,48 @@ app.put('/users/:userId/devices/:deviceId', isAuth, async (req, res) => {
 app.post('/users/:userId/devices/:deviceId/connect', isAuth, async (req, res) => {
   const userId = (req.user as any)._id.toHexString()
   const deviceId = req.params.deviceId
-  if (connections.has(deviceId)) {
-    if (userId && (await hasDevice(userId, deviceId))) {
-      const socketMessage = await connectDevice(deviceId)
-      connections.send(deviceId, socketMessage)
-      connections.disconnect(deviceId)
-      res.send({ success: true })
+  try {
+    if (connections.has(deviceId)) {
+      if (userId && (await hasDevice(userId, deviceId))) {
+        const socketMessage = await connectDevice(deviceId)
+        connections.send(deviceId, socketMessage)
+        connections.disconnect(deviceId)
+        res.send({ success: true })
+      } else {
+        validationFailed(res)()
+      }
     } else {
-      validationFailed(res)()
+      socketNotFound(res)
     }
-  } else {
-    socketNotFound(res)
+  } catch (e) {
+    res.send({
+      success: false,
+      description: e.toString(),
+    })
   }
 })
 
 app.post('/users/:userId/devices/:deviceId/update', isAuth, async (req, res) => {
   const userId = (req.user as any)._id.toHexString()
   const deviceId = req.params.deviceId
-  if (connections.isAuth(deviceId)) {
-    if (userId && (await hasDevice(userId, deviceId))) {
-      const socketMessage = await pushUpdate(deviceId)
-      connections.send(deviceId, socketMessage)
-      connections.disconnect(deviceId)
-      res.send({ success: true })
+  try {
+    if (connections.isAuth(deviceId)) {
+      if (userId && (await hasDevice(userId, deviceId))) {
+        const socketMessage = await pushUpdate(deviceId)
+        connections.send(deviceId, socketMessage)
+        connections.disconnect(deviceId)
+        res.send({ success: true })
+      } else {
+        validationFailed(res)()
+      }
     } else {
-      validationFailed(res)()
+      socketNotAuthorized(res)
     }
-  } else {
-    socketNotAuthorized(res)
+  } catch (e) {
+    res.send({
+      success: false,
+      description: e.toString(),
+    })
   }
 })
 

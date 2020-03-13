@@ -145,7 +145,7 @@ export const pushUpdate = (deviceId: string): Promise<WebsocketEvent> => {
         return getFiles(...Object.keys(device.widgets)).then(fileNames => {
           return {
             widgets: device.widgets,
-            fileNames
+            fileNames,
           }
         })
       }
