@@ -10,7 +10,7 @@ import {
   UpdateDeviceResponse,
 } from '../types/responses'
 import { addDevice, getCurrentUser, hasDevice } from './users'
-import { getFileNameMap } from './widgets'
+import { getFiles } from './widgets'
 
 const collection = (): Collection<IDevice> => {
   return mongodb().collection(Collections.DEVICES)
@@ -24,7 +24,7 @@ export const createDevice = (
   const device: IDevice = {
     _id: deviceId,
     name,
-    deviceWidgets: [],
+    widgets: {},
     config: {},
   }
   const session = getSession()
@@ -113,7 +113,7 @@ export const updateDevice = (
               $set: {
                 name: device.name,
                 config: device.config,
-                deviceWidgets: device.deviceWidgets,
+                widgets: device.widgets,
               },
             },
           )
@@ -142,14 +142,11 @@ export const pushUpdate = (deviceId: string): Promise<WebsocketEvent> => {
     .findOne({ _id: deviceId })
     .then(device => {
       if (device) {
-        return getFileNameMap(...device.deviceWidgets.map(dw => dw.widgetId)).then(fileNameMap => {
-          return device.deviceWidgets.map(dw => {
-            return {
-              widgetId: dw.widgetId,
-              fileName: fileNameMap.get(dw.widgetId),
-              config: dw.config,
-            }
-          })
+        return getFiles(...Object.keys(device.widgets)).then(fileNames => {
+          return {
+            widgets: device.widgets,
+            fileNames
+          }
         })
       }
       throw new Error('Device not found for update')

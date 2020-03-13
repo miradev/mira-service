@@ -118,10 +118,9 @@ export const deleteWidget = (id: string): Promise<DeleteWidgetResponse> => {
     .catch(createErrorResponse)
 }
 
-export const getFileNameMap = (...widgets: string[]): Promise<Map<string, string>> => {
+export const getFiles = (...widgets: string[]): Promise<string[]> => {
   return collection()
     .find({ _id: { $in: widgets } })
-    .map<[string, string]>(widget => [widget._id, widget.filename])
+    .map<string>(widget => widget.filename)
     .toArray()
-    .then(arr => new Map(arr))
 }

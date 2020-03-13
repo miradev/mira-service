@@ -43,7 +43,9 @@ export interface IDevice {
   _id: string
   name: string
   config: object
-  deviceWidgets: DeviceWidget[]
+  widgets: {
+    [id: string]: WidgetSetting
+  }
 }
 
 export interface IDeviceConnection {
@@ -51,7 +53,12 @@ export interface IDeviceConnection {
   hash: string
 }
 
-export interface DeviceWidget {
-  widgetId: string
-  config: object
+export interface WidgetSetting {
+  style?: {
+    [key: string]: string
+  }
+  config?: {
+    [configKey: string]: string | number | boolean | null
+  }
+  page: number
 }
