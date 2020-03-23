@@ -171,8 +171,9 @@ app.post('/users/:id/devices', isAuth, async (req, res) => {
   console.log(req.body)
   const deviceName = req.body.name
   const id = req.body._id
+  const userId = (req.user as any)._id.toHexString()
   return deviceName && id
-    ? res.send(await createDevice(deviceName, id, req.params.id))
+    ? res.send(await createDevice(deviceName, id, userId))
     : validationFailed(res)()
 })
 
